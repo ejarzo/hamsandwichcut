@@ -116,6 +116,7 @@ h1 {
 
 p {
     font-size: .9em;
+    color: #333;
 }
 
 button {
@@ -135,7 +136,17 @@ button:hover {
     box-shadow: 3px 3px 5px rgba(0,0,0,.3);
 }
 
-
+.img-example {
+    float: right;
+}
+.intro-screen {
+    padding: 100px;
+    position: absolute;
+    z-index: 2000;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
 .counters {
     position: absolute;
     top: 0px;

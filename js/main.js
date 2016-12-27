@@ -23,6 +23,7 @@ var GLOBAL_MARGIN_y = 5;
 var COUNT = 0;
 
 var circleAtMouse = r.circle(0,0,5).attr(circleAtMouseAttr);
+var dualAtMouse = r.path(circleAtMouseAttr);
 
 // p = (a,b)
 // y = ax + b
@@ -73,13 +74,22 @@ $(document).ready(function() {
     initAxes();
 
     $( "#holder" ).on( "mousemove", function( event ) {
-        var x = event.pageX - GLOBAL_MARGIN_x;
-        var y = event.pageY - GLOBAL_MARGIN_y;
+        if (STATUS != "inputdone") {
+            var x = event.pageX - GLOBAL_MARGIN_x;
+            var y = event.pageY - GLOBAL_MARGIN_y;
 
-//        var endpoint = "L" + x + "," + y;
+    //        var endpoint = "L" + x + "," + y;
 
-        circleAtMouse.attr({cx: x, cy: y});
-
+            circleAtMouse.attr({cx: x, cy: y});
+            dualAtMouse.remove();
+            dualAtMouse = convert_to_dual_line(x_to_coord(x),y_to_coord(y));
+            if (STATUS == "inputred") {
+                dualAtMouse.attr({"stroke": redColor, opacity: .5});
+            }
+            if (STATUS == "inputblue") {
+                dualAtMouse.attr({"stroke": blueColor, opacity: .5});
+            }
+        }
     });
 
   $( "#holder" ).on( "mousedown", function( event ) {
@@ -103,7 +113,7 @@ $(document).ready(function() {
             updateCounts();
         }
         if (STATUS == "inputblue") {
-            if (bluePoints.length < redPoints.length) {
+            //if (bluePoints.length < redPoints.length) {
                 var i = COUNT;
                 bluePoints.push(r.circle(x,y,5).attr(bluePointAtrr).hover(function(){pointHoverIn(i,"blue")}, function(){pointHoverOut(i,"blue")}));
                 var dualLine = convert_to_dual_line(x_to_coord(x),y_to_coord(y));
@@ -111,10 +121,10 @@ $(document).ready(function() {
                 blueLines.push(dualLine);
                 updateCounts();
                 COUNT++;
-            }
-            if (bluePoints.length == redPoints.length) {
+            //}
+/*            if (bluePoints.length == redPoints.length) {
                 endInputBlue();
-            }
+            }*/
         }
         if (redPoints.length >= 2) {
             $("#end-input-red").removeClass("hidden");
@@ -128,30 +138,44 @@ $(document).ready(function() {
 
 
 function endInputRed() {
-    if (redPoints.length % 2 == 0) {
+   /* if (redPoints.length % 2 == 0) {*/
         STATUS = "inputblue";
         circleAtMouse.attr("stroke", blueColor);
         $("#end-input-red").hide();
         $(".user-hint").html("Click to add <span class='text-blue'>blue</span> points");
         COUNT = 0;
-    } 
+        $("#end-input-blue").removeClass("hidden");
+
+   /* } 
     else {
         $(".main em").css({"border-bottom": "2px solid #777", "font-weight": "bold"});
-    }
+    }*/
 }
 
 function endInputBlue() {
     STATUS = "inputdone";
     $(".user-hint").html("We will begin by drawing the <strong>median line</strong> that separates the <span class='text-red'>red</span> points in half.");
     circleAtMouse.hide();
+    dualAtMouse.hide();
+
+    $("#end-input-blue").hide();
+
     $("#begin-walkthrough").removeClass("hidden"); 
 }
 
+function hideIntro() {
+    $(".intro-screen").animate({"margin-top": "100vh"}, 200, function(){
+        $(".intro-screen").hide();
+    });
+}
 function beginWalkthrough(){
     var sortedRedPoints = mergeSort(redPoints);
     console.log(sortedRedPoints);
     var medianPoint = sortedRedPoints[Math.floor(redPoints.length / 2)];
-    var medianPoint2 = sortedRedPoints[Math.floor(redPoints.length / 2) - 1];
+    var medianPoint2 = medianPoint;
+    if (redPoints.length % 2 == 0) {
+        medianPoint2 = sortedRedPoints[Math.floor(redPoints.length / 2) - 1];
+    }
 
     medianPoint.animate({"stroke-width": 10}, 200, function(){
         medianPoint.animate({"stroke-width": 1}, 200);

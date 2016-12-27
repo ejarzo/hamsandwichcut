@@ -20,11 +20,19 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
+        <div class="intro-screen">
+            <h1>Visualization: The Ham Sandwich Cut</h1>
+            <img class="img-example" src="img/hs_cut_example.png">
+            <p>The Ham Sandwich Theorem states that, for <em>n</em> objects in Euclidian space, it is possible to divide all of them in half with a single (<em>n</em> - 1) dimensional hyperplane. This site is a visualization of how we compute the cut in two dimensions. In computational geometry, the problem can be stated as: given sets of <span class="text-red">red</span> and <span class="text-blue">blue</span> points, compute a <strong>line</strong> that divides both the <span class="text-red">red</span> points in half and the <span class="text-blue">blue</span> points in half.</p>
+            <button onclick="hideIntro()">Get Started</button>
+        </div>
         <div class="main">
             <h1>The Ham Sandwich Cut</h1>
-            <p class="user-hint">Click to add <span class="text-red">red</span> points. <br> For simplicity's sake please add an <em>even number</em> of points.</p>
+            <p class="user-hint">Click to add <span class="text-red">red</span> points. <!-- <br><br> For simplicity's sake please add an <em>even number</em> of points.</p> -->
             <p class="counters"><span class="red-count text-red">0</span> | <span class="blue-count text-blue">0</span></p>
-            <button class="hidden" id="end-input-red" onclick="endInputRed()">Finished adding red points</button>
+            <button class="hidden" id="end-input-red" onclick="endInputRed()">Finished adding <span class="text-red">red</span> points</button>
+            <button class="hidden" id="end-input-blue" onclick="endInputBlue()">Finished adding <span class="text-blue">blue</span> points</button>
+
             <button class="hidden" id="begin-walkthrough" onclick="beginWalkthrough()">Continue</button>
 
         </div>
