@@ -22,9 +22,11 @@
         <!-- Add your site or application content here -->
         <div class="main">
             <h1>The Ham Sandwich Cut</h1>
-            <p class="user-hint">Click to add <span class="text-red">red</span> points</p>
-            <p><span class="red-count text-red">0</span> | <span class="blue-count text-blue">0</span></p>
+            <p class="user-hint">Click to add <span class="text-red">red</span> points. <br> For simplicity's sake please add an <em>even number</em> of points.</p>
+            <p class="counters"><span class="red-count text-red">0</span> | <span class="blue-count text-blue">0</span></p>
             <button class="hidden" id="end-input-red" onclick="endInputRed()">Finished adding red points</button>
+            <button class="hidden" id="begin-walkthrough" onclick="beginWalkthrough()">Continue</button>
+
         </div>
         <div id="holder">
         </div>

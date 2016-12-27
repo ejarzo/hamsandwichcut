@@ -114,6 +114,35 @@ h1 {
     margin: 0;    
 }
 
+p {
+    font-size: .9em;
+}
+
+button {
+    font-size: .9em;
+    padding-top: 5px;
+    background: none;
+    /*background: #EEE;*/
+    border: 1px solid #999;
+    box-shadow: 2px 2px 5px rgba(0,0,0,.2);
+    -webkit-transition: .2s;
+
+
+
+}
+
+button:hover {
+    box-shadow: 3px 3px 5px rgba(0,0,0,.3);
+}
+
+
+.counters {
+    position: absolute;
+    top: 0px;
+    left: 320px;
+    width: 100px;
+}
+
 #holder {
     background-color: #EEE;
     height: 100vh;

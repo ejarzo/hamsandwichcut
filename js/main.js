@@ -11,14 +11,16 @@ var blueLineAtrr   = {fill: blueColor, stroke: blueColor, opacity: .2};
 
 var axesAttr = {stroke: greyColor};
 
-var bluePoints = r.set();
-var redPoints = r.set();
+var bluePoints = [];
+var redPoints = [];
 
-var blueLines = r.set();
-var redLines = r.set();
+var blueLines = [];
+var redLines = [];
 
 var GLOBAL_MARGIN_x = 305;
 var GLOBAL_MARGIN_y = 5;
+
+var COUNT = 0;
 
 var circleAtMouse = r.circle(0,0,5).attr(circleAtMouseAttr);
 
@@ -26,13 +28,7 @@ var circleAtMouse = r.circle(0,0,5).attr(circleAtMouseAttr);
 // y = ax + b
 // 
 
-function convert_to_dual_line(a,b){
-        console.log("new dual line:", a,b);
-        var theta = Math.atan(a/50) * (-180/Math.PI);
-        console.log("theta:", theta);
-        this.pathString = "M"+coord_to_x(-2000)+","+coord_to_y(0)+"L"+coord_to_x(2000)+","+coord_to_y(0)
-        return r.path(this.pathString).translate(0,-b).rotate(theta);
-}
+
 /*class DualLine {
     constructor(a,b) {
 
@@ -52,6 +48,26 @@ function initAxes(){
 STATUS = "inputred";
 //var redPoint = r.circle(0,0,5).attr(redPointArrr);
 //var bluePoint = r.circle(0,0,5).attr(bluePointArrr);
+function pointHoverIn(i, color){
+    if (color == "red") {
+        console.log(i);
+        var line = redLines[i];
+        line.attr({/*"stroke": "#000", */opacity: 1});
+    } else {
+        var line = blueLines[i];
+        line.attr({/*"stroke": "#000", */opacity: 1});
+    }
+}
+
+function pointHoverOut(i, color){
+    if (color == "red") {
+        var line = redLines[i];
+        line.attr(redLineAtrr);
+    } else {
+        var line = blueLines[i];
+        line.attr(blueLineAtrr);
+    }
+}
 
 $(document).ready(function() {
     initAxes();
@@ -75,19 +91,26 @@ $(document).ready(function() {
             console.log(x, y);
 
         if (STATUS == "inputred") {
-            redPoints.push(r.circle(x,y,5).attr(redPointAtrr));
+                var i = COUNT;
+                redPoints.push(r.circle(x,y,5).attr(redPointAtrr).hover(function(){pointHoverIn(i,"red")}, function(){pointHoverOut(i,"red")}));
+            //};
+            
             var dualLine = convert_to_dual_line(x_to_coord(x),y_to_coord(y));
             dualLine.attr(redLineAtrr);
             redLines.push(dualLine);
+            
+            COUNT++;
             updateCounts();
         }
         if (STATUS == "inputblue") {
             if (bluePoints.length < redPoints.length) {
-                bluePoints.push(r.circle(x,y,5).attr(bluePointAtrr));
+                var i = COUNT;
+                bluePoints.push(r.circle(x,y,5).attr(bluePointAtrr).hover(function(){pointHoverIn(i,"blue")}, function(){pointHoverOut(i,"blue")}));
                 var dualLine = convert_to_dual_line(x_to_coord(x),y_to_coord(y));
                 dualLine.attr(blueLineAtrr);
                 blueLines.push(dualLine);
                 updateCounts();
+                COUNT++;
             }
             if (bluePoints.length == redPoints.length) {
                 endInputBlue();
@@ -97,6 +120,7 @@ $(document).ready(function() {
             $("#end-input-red").removeClass("hidden");
         }
 
+
         //}
     });
 
@@ -104,16 +128,44 @@ $(document).ready(function() {
 
 
 function endInputRed() {
-    STATUS = "inputblue";
-    circleAtMouse.attr("stroke", blueColor);
-    $("#end-input-red").hide();
-    $(".user-hint").html("Click to add <span class='text-blue'>blue</span> points");
+    if (redPoints.length % 2 == 0) {
+        STATUS = "inputblue";
+        circleAtMouse.attr("stroke", blueColor);
+        $("#end-input-red").hide();
+        $(".user-hint").html("Click to add <span class='text-blue'>blue</span> points");
+        COUNT = 0;
+    } 
+    else {
+        $(".main em").css({"border-bottom": "2px solid #777", "font-weight": "bold"});
+    }
 }
 
 function endInputBlue() {
     STATUS = "inputdone";
-    $(".user-hint").html("Finished adding points");
+    $(".user-hint").html("We will begin by drawing the <strong>median line</strong> that separates the <span class='text-red'>red</span> points in half.");
     circleAtMouse.hide();
+    $("#begin-walkthrough").removeClass("hidden"); 
+}
+
+function beginWalkthrough(){
+    var sortedRedPoints = mergeSort(redPoints);
+    console.log(sortedRedPoints);
+    var medianPoint = sortedRedPoints[Math.floor(redPoints.length / 2)];
+    var medianPoint2 = sortedRedPoints[Math.floor(redPoints.length / 2) - 1];
+
+    medianPoint.animate({"stroke-width": 10}, 200, function(){
+        medianPoint.animate({"stroke-width": 1}, 200);
+    });
+    medianPoint2.animate({"stroke-width": 10}, 200, function(){
+        medianPoint2.animate({"stroke-width": 1}, 200);
+    });
+
+
+    var medianLineX = (medianPoint.attr("cx") + medianPoint2.attr("cx")) / 2;
+    console.log("MX", medianLineX);
+    var medianLinePath = "M"+medianLineX+","+coord_to_y(-2000)+"L"+medianLineX+","+coord_to_y(2000);
+    var medianLine = r.path(medianLinePath).attr({"stroke-width": 3, stroke: "#666", opacity: 0});
+    medianLine.animate({"opacity": 1}, 500);
 }
 
 function updateCounts(){
@@ -141,4 +193,29 @@ function y_to_coord(y){
 function coord_to_y(y){
     var width = $("#holder").height() / 2;
     return y + width;
+}
+
+function convert_to_dual_line(a,b){
+        console.log("new dual line:", a,b);
+        var theta = Math.atan(a/100) * (-180/Math.PI);
+        console.log("theta:", theta);
+        this.pathString = "M"+coord_to_x(-2000)+","+coord_to_y(0)+"L"+coord_to_x(2000)+","+coord_to_y(0)
+        return r.path(this.pathString).translate(0,-b).rotate(theta);
+}
+
+function mergeSort (arr) {    
+    if (arr.length < 2) return arr;
+    
+    var mid = Math.floor(arr.length /2);
+    var subLeft = mergeSort(arr.slice(0,mid));
+    var subRight = mergeSort(arr.slice(mid));
+    
+    return merge(subLeft, subRight);
+}
+
+function merge (a,b) {
+    var result = [];
+    while (a.length >0 && b.length >0)
+        result.push(a[0].attr("cx") < b[0].attr("cx")? a.shift() : b.shift());
+    return result.concat(a.length? a : b);
 }
