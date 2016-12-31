@@ -101,7 +101,7 @@ textarea {
 }
 
 .main{
-    width: 300px;
+    width: 350px;
     position: absolute;
     background-color: #fff;
     z-index: 1000;
@@ -117,8 +117,15 @@ h1 {
 p {
     font-size: .9em;
     color: #333;
+    /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+*/
 }
-
+.prompt {
+    font-size: .9em;
+    border-top: 1px solid #CCC;
+    margin-top: 5px;
+    padding-top: 10px
+}
 button {
     font-size: .9em;
     padding-top: 5px;
@@ -126,8 +133,8 @@ button {
     /*background: #EEE;*/
     border: 1px solid #999;
     box-shadow: 2px 2px 5px rgba(0,0,0,.2);
-    -webkit-transition: .2s;
-
+    -webkit-transition: .1s;
+    outline: none;
 
 
 }
@@ -136,8 +143,17 @@ button:hover {
     box-shadow: 3px 3px 5px rgba(0,0,0,.3);
 }
 
+button:click {
+    box-shadow: none;
+}
+
 .img-example {
     float: right;
+}
+
+.user-hint {
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 .intro-screen {
     padding: 100px;
@@ -150,7 +166,7 @@ button:hover {
 .counters {
     position: absolute;
     top: 0px;
-    left: 320px;
+    left: 365px;
     width: 100px;
 }
 
@@ -158,23 +174,63 @@ button:hover {
     background-color: #EEE;
     height: 100vh;
     position: relative;
-    margin-left: 300px;
+    margin-left: 350px;
     right: 0;
-    width: calc(100% - 300px);
+    width: calc(100% - 350px);
     border: 5px solid #FFF;
 }
 
 .text-red {
-    color: #f22;
+    color: #FF1919;
 }
 
 .text-blue {
-    color: #22f;
+    color: #195AFF;
 }
 
 
+.circle-red {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px; 
+    border: 2px solid #FF1919;
+    display: inline-block;
+    margin: 0;
+    margin-right: 5px;
+    /* width and height can be anything, as long as they're equal */
+}
+
+#alert-message {
+    background-color: #FFF;
+    color: #222;
+    border: 2px solid #FF1919;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    font-size: .7em;
+    padding: 3px;
+}
+
+.circle-blue {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px; 
+    border: 2px solid #195AFF;
+    display: inline-block;
+    margin: 0;
+    margin-right: 5px;
+    /* width and height can be anything, as long as they're equal */
+}
+
+.circle-pos {
+    background-color: #EEE;
+}
 
 
+.circle-neg {
+    background-color: #222;
+}
 
 
 
@@ -194,7 +250,7 @@ button:hover {
  */
 
 .hidden {
-    display: none !important;
+    display: none;
 }
 
 /*

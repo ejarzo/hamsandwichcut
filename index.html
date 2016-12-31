@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
+        <title>The Ham Sandwich Cut</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -19,26 +19,35 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <!-- Add your site or application content here -->
-        <div class="intro-screen">
+       <!--  <div class="intro-screen">
             <h1>Visualization: The Ham Sandwich Cut</h1>
             <img class="img-example" src="img/hs_cut_example.png">
-            <p>The Ham Sandwich Theorem states that, for <em>n</em> objects in Euclidian space, it is possible to divide all of them in half with a single (<em>n</em> - 1) dimensional hyperplane. This site is a visualization of how we compute the cut in two dimensions. In computational geometry, the problem can be stated as: given sets of <span class="text-red">red</span> and <span class="text-blue">blue</span> points, compute a <strong>line</strong> that divides both the <span class="text-red">red</span> points in half and the <span class="text-blue">blue</span> points in half.</p>
+            <p>The Ham Sandwich Theorem states that, for <em>n</em> objects in Euclidian space, it is possible to divide all of them in half with a single <em>(n - 1)</em> dimensional hyperplane. This site is a visualization of how we compute the cut in two dimensions. In computational geometry, the problem can be stated as: given sets of <span class="text-red">red</span> and <span class="text-blue">blue</span> points, compute a <strong>line</strong> that divides both the <span class="text-red">red</span> points in half and the <span class="text-blue">blue</span> points in half.</p>
             <button onclick="hideIntro()">Get Started</button>
-        </div>
+        </div> -->
         <div class="main">
             <h1>The Ham Sandwich Cut</h1>
-            <p class="user-hint">Click to add <span class="text-red">red</span> points. <!-- <br><br> For simplicity's sake please add an <em>even number</em> of points.</p> -->
+
+            <div class="user-hint">
+                <p>
+                An important concept for this problem is <strong><em>Duality</em></strong>. Duality is a method for representing a problem in an analogous plane, and can help with solving seemingly complicated problems because if we find a solution in the dual plane, we have also found a solution in the primal plane.<br><br>
+
+                In our dual plane we convert <em>points to lines</em> and <em>lines to points</em>. The exact conversion is as follows: each point <em>(a,b)</em> translates to a line of the form<br> <em>y = (a/100)x + b</em>. (We divide <em>a</em> to get reasonable slopes on our graph.)<br><br>
+
+                The line you see is the dual line for the point under the cursor. Since we are only dealing with points in the primal plane, we only have lines in the dual plane.
+                </p>
+                
+                <p>Click to add <span class="text-red">red</span> points. <br><br> 
+
+                For simplicity's sake please add an <em class="highlight">even number</em> of points.</p>
+            </div>
+            
             <p class="counters"><span class="red-count text-red">0</span> | <span class="blue-count text-blue">0</span></p>
-            <button class="hidden" id="end-input-red" onclick="endInputRed()">Finished adding <span class="text-red">red</span> points</button>
-            <button class="hidden" id="end-input-blue" onclick="endInputBlue()">Finished adding <span class="text-blue">blue</span> points</button>
-
-            <button class="hidden" id="begin-walkthrough" onclick="beginWalkthrough()">Continue</button>
-
+            
+            <div id="user-prompt"></div>
         </div>
-        <div id="holder">
-        </div>
-
+        <div id="holder"></div>
+        <div id="alert-message" class="hidden">Due to my questionable algorithm, the program does not work on this input!</div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
